@@ -26,22 +26,14 @@ public class InitBean {
         Teacher bruck = new Teacher("Peter", "Bruck", "PB2312");
         Teacher beller = new Teacher("Renate", "Beller", "RB312");
         Course algebraI = new Course("Algebra I", mathe, meier);
-        meier.getCourseList().add(algebraI);
         Course algebraII = new Course("Algebra II", mathe, meier);
-        meier.getCourseList().add(algebraII);
         Course linMath = new Course("Linear Mathematics", mathe, bruck);
-        bruck.getCourseList().add(linMath);
         Course texts = new Course("Text-Types", englisch, bruck);
-        bruck.getCourseList().add(texts);
         Course vocab = new Course("Advanced Vocabulary", englisch, bruck);
-        bruck.getCourseList().add(vocab);
         Course speech = new Course("Professional Speech", deutsch, peters);
-        peters.getCourseList().add(speech);
         Course literature = new Course("Classic Literature", deutsch, peters);
-        peters.getCourseList().add(literature);
         Course quaternions = new Course("Complex Numbers and Quaternions", mathe, beller);
-        beller.getCourseList().add(quaternions);
-
+        
         Student kordas = new Student("Michael", "Kordas", "if150111");
         Student davis = new Student("Thomas", "Davis", "if150112");
         Student bauer = new Student("Jonas", "Bauer", "if150113");
@@ -49,19 +41,19 @@ public class InitBean {
         Student eich = new Student("Albin", "Eich", "if150115");
         Student distel = new Student("Nicola", "Distel", "if150116");
 
-        Enrolment e1 = kordas.enrol(algebraI);
-        Enrolment e2 = kordas.enrol(algebraII);
-        Enrolment e3 = davis.enrol(algebraI);
-        Enrolment e4 = davis.enrol(linMath);
-        Enrolment e5 = bauer.enrol(algebraII);
-        Enrolment e6 = bauer.enrol(texts);
-        Enrolment e7 = hoelder.enrol(texts);
-        Enrolment e8 = hoelder.enrol(vocab);
-        Enrolment e9 = eich.enrol(speech);
-        Enrolment e10 = eich.enrol(literature);
-        Enrolment e11 = eich.enrol(algebraI);
-        Enrolment e12 = distel.enrol(quaternions);
-        Enrolment e13 = distel.enrol(algebraII);
+        Enrolment e1 = new Enrolment(algebraI,kordas);
+        Enrolment e2 = new Enrolment(algebraII,kordas);
+        Enrolment e3 = new Enrolment(algebraI,davis);
+        Enrolment e4 = new Enrolment(linMath,davis);
+        Enrolment e5 = new Enrolment(algebraII,bauer);
+        Enrolment e6 = new Enrolment(texts,bauer);
+        Enrolment e7 = new Enrolment(texts,hoelder);
+        Enrolment e8 = new Enrolment(vocab,hoelder);
+        Enrolment e9 = new Enrolment(speech,eich);
+        Enrolment e10 = new Enrolment(literature,eich);
+        Enrolment e11 = new Enrolment(algebraI,eich);
+        Enrolment e12 = new Enrolment(quaternions,distel);
+        Enrolment e13 = new Enrolment(algebraII,distel);
 
         em.persist(mathe);
         em.persist(deutsch);

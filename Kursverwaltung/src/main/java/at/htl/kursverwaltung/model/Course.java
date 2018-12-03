@@ -1,6 +1,8 @@
 package at.htl.kursverwaltung.model;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlTransient;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,10 +20,6 @@ public class Course {
 
     @ManyToOne
     private Teacher teacher;
-
-    @OneToMany(mappedBy = "course")
-    private List<Enrolment> enrolmentList = new ArrayList<Enrolment>();
-
 
     public Course(String name, Subject subject, Teacher teacher) {
         this.name = name;
@@ -62,13 +60,5 @@ public class Course {
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
-    }
-
-    public List<Enrolment> getEnrolmentList() {
-        return enrolmentList;
-    }
-
-    public void setEnrolmentList(List<Enrolment> enrolmentList) {
-        this.enrolmentList = enrolmentList;
     }
 }

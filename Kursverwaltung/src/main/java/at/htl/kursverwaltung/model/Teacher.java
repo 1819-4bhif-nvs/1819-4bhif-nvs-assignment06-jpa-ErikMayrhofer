@@ -1,5 +1,6 @@
 package at.htl.kursverwaltung.model;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -13,9 +14,6 @@ public class Teacher extends Person {
 
     @Column(nullable = false)
     private String teacherNumber;
-
-    @OneToMany(mappedBy = "teacher")
-    private List<Course> courseList = new ArrayList<Course>();
 
     public Teacher() {
     }
@@ -41,13 +39,5 @@ public class Teacher extends Person {
 
     public void setTeacherNumber(String teacherNumber) {
         this.teacherNumber = teacherNumber;
-    }
-
-    public List<Course> getCourseList() {
-        return courseList;
-    }
-
-    public void setCourseList(List<Course> courseList) {
-        this.courseList = courseList;
     }
 }
