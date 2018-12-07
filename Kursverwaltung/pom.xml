@@ -32,7 +32,7 @@
     
     <build>
         <finalName>
-            kurse
+            kursverwaltung
         </finalName>
     </build>
 
