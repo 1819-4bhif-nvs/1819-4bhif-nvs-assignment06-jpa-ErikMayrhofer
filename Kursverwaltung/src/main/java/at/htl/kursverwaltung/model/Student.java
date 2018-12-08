@@ -1,9 +1,6 @@
 package at.htl.kursverwaltung.model;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @NamedQueries({
         @NamedQuery(name = "Student.findAll", query = "select s from Student s"),
@@ -43,4 +40,5 @@ public class Student extends Person{
     public void setMatNumber(String matNumber) {
         this.matNumber = matNumber;
     }
+
 }

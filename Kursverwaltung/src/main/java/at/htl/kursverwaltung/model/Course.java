@@ -1,10 +1,5 @@
 package at.htl.kursverwaltung.model;
-
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlTransient;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "Course")
 public class Course {
@@ -15,10 +10,10 @@ public class Course {
     @Column(nullable = false)
     private String name;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Subject subject;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne()
     private Teacher teacher;
 
     public Course(String name, Subject subject, Teacher teacher) {
@@ -60,5 +55,15 @@ public class Course {
 
     public void setTeacher(Teacher teacher) {
         this.teacher = teacher;
+    }
+
+    @Override
+    public String toString() {
+        return "Course{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", subject=" + subject +
+                ", teacher=" + teacher +
+                '}';
     }
 }

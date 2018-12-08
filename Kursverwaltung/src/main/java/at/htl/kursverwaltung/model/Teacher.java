@@ -1,10 +1,6 @@
 package at.htl.kursverwaltung.model;
 
-import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity(name = "Teacher")
 public class Teacher extends Person {
@@ -39,5 +35,13 @@ public class Teacher extends Person {
 
     public void setTeacherNumber(String teacherNumber) {
         this.teacherNumber = teacherNumber;
+    }
+
+    @Override
+    public String toString() {
+        return "Teacher{" +
+                "id=" + id +
+                ", teacherNumber='" + teacherNumber + '\'' +
+                '}';
     }
 }
