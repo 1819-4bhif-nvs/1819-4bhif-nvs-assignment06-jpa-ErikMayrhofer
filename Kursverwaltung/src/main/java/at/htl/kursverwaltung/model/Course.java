@@ -1,5 +1,8 @@
 package at.htl.kursverwaltung.model;
+
 import javax.persistence.*;
+import at.htl.kursverwaltung.model.Subject;
+import at.htl.kursverwaltung.model.Teacher;
 
 @Entity(name = "Course")
 public class Course {
