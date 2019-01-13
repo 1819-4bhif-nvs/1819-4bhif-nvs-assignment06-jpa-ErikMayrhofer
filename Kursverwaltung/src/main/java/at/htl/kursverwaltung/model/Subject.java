@@ -13,6 +13,7 @@ public class Subject {
     private String name;
 
     public Subject() {
+        this(null);
     }
 
     public Subject(String name) {

@@ -2,32 +2,48 @@ package at.htl.kursverwaltung.model;
 
 import at.htl.kursverwaltung.core.LocalDateAdapter;
 
+import javax.json.bind.annotation.JsonbDateFormat;
+import javax.json.bind.annotation.JsonbTypeAdapter;
 import javax.persistence.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"course_id", "student_id"})
+)
+@NamedQuery(name = "Enrolment.findAll", query = "select e from Enrolment e")
 @Entity(name = "Enrolment")
 public class Enrolment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @ManyToOne()
+    @JoinColumn(name = "course_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
     private Course course;
 
-    @ManyToOne()
+    @JoinColumn(name = "student_id")
+    @ManyToOne(cascade = {CascadeType.REFRESH})
     private Student student;
 
-    @XmlJavaTypeAdapter(LocalDateAdapter.class)
+    @JsonbTypeAdapter(LocalDateAdapter.class)
     private LocalDateTime date;
 
     public Enrolment() {
+        this(null, null, null);
     }
 
     public Enrolment(Course course, Student student, LocalDateTime date) {
         this.course = course;
         this.student = student;
         this.date = date;
+        if(student != null){
+            student.addEnrolment(this);
+        }
+        if(course != null){
+            course.addEnrolment(this);
+        }
     }
 
     public Long getId() {
@@ -43,7 +59,13 @@ public class Enrolment {
     }
 
     public void setCourse(Course course) {
-        this.course = course;
+        if(course != this.course){
+            if(this.course != null){
+                course.getEnrolmentList().remove(this);
+            }
+            this.course = course;
+            course.addEnrolment(this);
+        }
     }
 
     public Student getStudent() {
@@ -51,7 +73,13 @@ public class Enrolment {
     }
 
     public void setStudent(Student student) {
-        this.student = student;
+        if(student != this.student){
+            if(this.student != null){
+                student.getEnrolmentList().remove(this);
+            }
+            this.student = student;
+            student.addEnrolment(this);
+        }
     }
 
     public LocalDateTime getDate() {

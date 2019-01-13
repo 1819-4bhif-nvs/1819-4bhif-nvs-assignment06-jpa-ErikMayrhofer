@@ -2,6 +2,7 @@ package at.htl.kursverwaltung.model;
 
 import javax.persistence.*;
 
+@NamedQuery(name = "Person.findAll", query = "select p from Person p")
 @Entity(name = "Person")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class Person {

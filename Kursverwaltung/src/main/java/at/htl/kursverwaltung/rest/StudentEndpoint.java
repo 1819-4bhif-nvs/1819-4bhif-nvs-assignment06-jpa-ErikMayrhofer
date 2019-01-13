@@ -9,6 +9,6 @@ import javax.ws.rs.Path;
 @Stateless
 public class StudentEndpoint extends AbstractEndpoint<Student>{
     public StudentEndpoint(){
-        super(Student.class, "select s from Student s");
+        super(Student.class);
     }
 }

@@ -10,6 +10,6 @@ import javax.ws.rs.Path;
 @Path("courses")
 public class CourseEndpoint extends AbstractEndpoint<Course> {
     public CourseEndpoint(){
-        super(Course.class, "select c from Course c");
+        super(Course.class);
     }
 }

@@ -7,7 +7,11 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 
 @Singleton
 @Startup
@@ -26,14 +30,15 @@ public class InitBean {
         Teacher peters = new Teacher("Dieter", "Peters", "DP321");
         Teacher bruck = new Teacher("Peter", "Bruck", "PB2312");
         Teacher beller = new Teacher("Renate", "Beller", "RB312");
-        Course algebraI = new Course("Algebra I", mathe, meier);
-        Course algebraII = new Course("Algebra II", mathe, meier);
-        Course linMath = new Course("Linear Mathematics", mathe, bruck);
-        Course texts = new Course("Text-Types", englisch, bruck);
-        Course vocab = new Course("Advanced Vocabulary", englisch, bruck);
-        Course speech = new Course("Professional Speech", deutsch, peters);
-        Course literature = new Course("Classic Literature", deutsch, peters);
-        Course quaternions = new Course("Complex Numbers and Quaternions", mathe, beller);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy-HH:mm");
+        Course algebraI = new Course("Algebra I", mathe, meier, LocalDateTime.parse("01.02.2019-12:00", formatter));
+        Course algebraII = new Course("Algebra II", mathe, meier, LocalDateTime.parse("05.02.2019-12:00", formatter));
+        Course linMath = new Course("Linear Mathematics", mathe, bruck, LocalDateTime.parse("01.02.2019-08:00", formatter));
+        Course texts = new Course("Text-Types", englisch, bruck, LocalDateTime.parse("02.02.2019-08:00", formatter));
+        Course vocab = new Course("Advanced Vocabulary", englisch, bruck, LocalDateTime.parse("03.02.2019-08:00", formatter));
+        Course speech = new Course("Professional Speech", deutsch, peters, LocalDateTime.parse("01.02.2019-18:00", formatter));
+        Course literature = new Course("Classic Literature", deutsch, peters, LocalDateTime.parse("02.02.2019-17:00", formatter));
+        Course quaternions = new Course("Complex Numbers and Quaternions", mathe, beller, LocalDateTime.parse("01.03.2019-08:00", formatter));
         
         Student kordas = new Student("Michael", "Kordas", "if150111");
         Student davis = new Student("Thomas", "Davis", "if150112");
@@ -42,44 +47,30 @@ public class InitBean {
         Student eich = new Student("Albin", "Eich", "if150115");
         Student distel = new Student("Nicola", "Distel", "if150116");
 
-        em.persist(mathe);
-        em.persist(deutsch);
-        em.persist(englisch);
-        em.persist(meier);
-        em.persist(peters);
-        em.persist(bruck);
-        em.persist(beller);
-        em.persist(algebraI);
-        em.persist(algebraII);
-        em.persist(linMath);
-        em.persist(texts);
-        em.persist(vocab);
-        em.persist(speech);
-        em.persist(literature);
-        em.persist(quaternions);
-        em.persist(kordas);
-        em.persist(davis);
-        em.persist(bauer);
-        em.persist(hoelder);
-        em.persist(eich);
-        em.persist(distel);
+        Subject[] arr = new Subject[]{mathe, deutsch, englisch};
+        Teacher[] teachers = new Teacher[]{meier, peters, bruck, beller};
+        Course[] courses = new Course[]{algebraI, algebraII, linMath, texts, vocab, speech, literature, quaternions};
+        Student[] students = new Student[]{kordas, davis, bauer, hoelder, eich, distel};
 
-        enrol(algebraI, kordas);
-        enrol(algebraII, kordas);
-        enrol(algebraI, davis);
-        enrol(linMath, davis);
-        enrol(algebraII, bauer);
-        enrol(texts, bauer);
-        enrol(texts, hoelder);
-        enrol(vocab, hoelder);
-        enrol(speech, eich);
-        enrol(literature, eich);
-        enrol(algebraI, eich);
-        enrol(quaternions, distel);
-        enrol(algebraII, distel);
+        persistAll(arr, teachers, courses, students);
+
+        persistAll(
+            kordas.enrol(algebraI, algebraII),
+            davis.enrol(algebraI, linMath),
+            bauer.enrol(algebraII, texts),
+            hoelder.enrol(texts, vocab),
+            eich.enrol(speech, literature, algebraI),
+            distel.enrol(quaternions, algebraII)
+        );
     }
 
-    private void enrol(Course c, Student s){
-        em.persist(new Enrolment(c, s, LocalDateTime.now()));
+
+    //Object is used here to prevent heap pollution
+    private void persistAll(Object[]... o){
+        for (Object[] list: o) {
+            for(Object item : list){
+                em.persist(item);
+            }
+        }
     }
 }

@@ -9,6 +9,6 @@ import javax.ws.rs.Path;
 @Path("enrolments")
 public class EnrolmentEndpoint extends AbstractEndpoint<Enrolment> {
     public EnrolmentEndpoint() {
-        super(Enrolment.class, "select e from Enrolment e");
+        super(Enrolment.class);
     }
 }

@@ -1,7 +1,12 @@
 package at.htl.kursverwaltung.model;
 
+import javax.json.bind.annotation.JsonbTransient;
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
+@NamedQuery(name = "Teacher.findAll", query = "select t from Teacher t")
 @Entity(name = "Teacher")
 public class Teacher extends Person {
     @Id
@@ -11,12 +16,18 @@ public class Teacher extends Person {
     @Column(nullable = false)
     private String teacherNumber;
 
+    @JsonbTransient
+    @OneToMany(mappedBy = "teacher")
+    private Set<Course> courseList;
+
     public Teacher() {
+        this(null, null, null);
     }
 
     public Teacher(String firstName, String lastName, String teacherNumber) {
         super(firstName, lastName);
         this.teacherNumber = teacherNumber;
+        this.courseList = new HashSet<>();
     }
 
     @Override
@@ -37,11 +48,22 @@ public class Teacher extends Person {
         this.teacherNumber = teacherNumber;
     }
 
+    public Set<Course> getCourseList() {
+        return courseList;
+    }
+
     @Override
     public String toString() {
         return "Teacher{" +
                 "id=" + id +
                 ", teacherNumber='" + teacherNumber + '\'' +
                 '}';
+    }
+
+    public void addCourse(Course course) {
+        if(!courseList.contains(course)){
+            courseList.add(course);
+            course.setTeacher(this);
+        }
     }
 }
